@@ -2,14 +2,22 @@ TOOL_DEFINITIONS = [
     {
         "name": "web_search",
         "description": """
-        Search the web for apartment listings and rental housing. Use this tool first when the user provides search criteria. (location, price, bedrooms.) Construct targeted queries that include location, bedroom count, and price range — for example '2 bedroom apartments Denver CO under $1800'. Do not use this tool to get pricing benchmarks or neighborhood statistics — use hud_api and census_api for those instead.
-        """,
+        Search the web for apartment listings and rental housing. Use this tool first when the user provides search criteria. (location, bedrooms, price.) Construct targeted queries that include location, bedroom count, and price range — for example '2 bedroom apartments Denver CO under $1800'.
+        Note, the user may not provide all query parts in the search criteria (location, bedroom count, price range). If location is missing, use the browser default location. If the user has that feature turned off, ask the user what location they want to search in. If bedroom count is missing, don't include that in the search criteria, i.e. include all room counts. If price ranch is missing, don't include that in the search criteria, i.e. search for all rentals in the provided area regardless of price.  
+        Do not use this tool to get pricing benchmarks or neighborhood statistics — use hud_api and census_api for those instead.
+        """, #
         "input_schema": {
             "type": "object",
             "properties": {
                 "query": {
                     "type": "string",
-                    "description": "A targeted search query including location, bedroom count, and price range. Example: '2 bedroom apartments Denver CO under $1800 site:zillow.com OR site:apartments.com'"
+                    "description": """
+                    A targeted search query including location, bedroom count, and price range.
+                    Example: '2 bedroom apartments Denver CO under $1800 site:zillow.com OR site:apartments.com'
+                    Example if location is missing: '1 bedroom apartments [current location - Denver Colorado] between $1000 and $1900 site:zillow.com OR site:apartments.com' or request location if user has turned off browser location
+                    Example if bedroom count is missing: 'Apartments in Denver CO under $2000 site:zillow.com OR site:apartments.com'
+                    Example if price is missing: '2 bedroom house for rent in denver CO site:zillow.com OR site:apartments.com'
+                    """
                 }
             },
             "required": ["query"]
@@ -18,7 +26,7 @@ TOOL_DEFINITIONS = [
 
     {
         "name": "fetch_page",
-        "description": "Fetch and extract the cull content of a specific webpage. Use this after web_search returns promising listing URLs — fetch each URL to extract full details like exact price, square footage, amenities, lease terms, and contact info that doesn't appear in search snippets.",
+        "description": "Fetch and extract the full content of a specific webpage. Use this after web_search returns promising listing URLs — fetch each URL to extract full details like exact price, square footage, amenities, lease terms, and contact info that doesn't appear in search snippets.",
         "input_schema": {
             "type": "object",
             "properties": {
@@ -43,7 +51,7 @@ TOOL_DEFINITIONS = [
                 },
                 "bedroom_count": {
                     "type": "integer",
-                    "description": "Number of bedrooms as an integer (1, 2, 3, or 4). Used to return the correct FMR for that unit size."
+                    "description": "Number of bedrooms as an integer (1, 2, 3, or 4). Used to return the correct FMR for that unit size. Or 0 if no bedroom count is provided."
                 }
             },
             "required": ["zip_code", "bedroom_count"]
