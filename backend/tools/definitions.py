@@ -3,7 +3,7 @@ TOOL_DEFINITIONS = [
         "name": "web_search",
         "description": """
         Search the web for apartment listings and rental housing. Use this tool first when the user provides search criteria. (location, bedrooms, price.) Construct targeted queries that include location, bedroom count, and price range — for example '2 bedroom apartments Denver CO under $1800'.
-        Note, the user may not provide all query parts in the search criteria (location, bedroom count, price range). If location is missing, use the browser default location. If the user has that feature turned off, ask the user what location they want to search in. If bedroom count is missing, don't include that in the search criteria, i.e. include all room counts. If price ranch is missing, don't include that in the search criteria, i.e. search for all rentals in the provided area regardless of price.  
+        Note, the user may not provide all query parts in the search criteria (location, bedroom count, price range). If location is missing, ask the user what location they want to search in. If bedroom count is missing, don't include that in the search criteria, i.e. include all room counts. If price range is missing, don't include that in the search criteria, i.e. search for all rentals in the provided area regardless of price.  
         Do not use this tool to get pricing benchmarks or neighborhood statistics — use hud_api and census_api for those instead.
         """, #
         "input_schema": {
@@ -51,7 +51,7 @@ TOOL_DEFINITIONS = [
                 },
                 "bedroom_count": {
                     "type": "integer",
-                    "description": "Number of bedrooms as an integer (1, 2, 3, or 4). Used to return the correct FMR for that unit size. Or 0 if no bedroom count is provided."
+                    "description": "Number of bedrooms as an integer (1, 2, 3, or 4). Used to return the correct FMR for that unit size. Or 0 if the user didn't specify a bedroom count."
                 }
             },
             "required": ["zip_code", "bedroom_count"]
@@ -60,7 +60,7 @@ TOOL_DEFINITIONS = [
 
     {
         "name": "census_api",
-        "description": "Look up neighborhood demographic and housing dara for a zip code using the Census ACS dataset. Use this to add context about each listing's neighborhood — median income, commute times, population density, and vacancy rate. Call this after identifying specific zip codes from listings.",
+        "description": "Look up neighborhood demographic and housing data for a zip code using the Census ACS dataset. Use this to add context about each listing's neighborhood — median income, commute times, population density, and vacancy rate. Call this after identifying specific zip codes from listings.",
         "input_schema": {
             "type": "object",
             "properties": {
