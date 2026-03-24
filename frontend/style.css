@@ -105,7 +105,7 @@ body {
   gap: 10px;
 }
 
-.chat-input-area textarea {
+.chat-input-area input {
   flex: 1;
   padding: 10px 14px;
   border: 1px solid #d1d5db;
@@ -118,7 +118,7 @@ body {
   line-height: 1.4;
 }
 
-.chat-input-area textarea:focus {
+.chat-input-area input:focus {
   border-color: #2563eb;
   box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
 }

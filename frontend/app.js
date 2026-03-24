@@ -1,11 +1,9 @@
-const API_URL = "/chat"; // Change this to your backend endpoint
-
 const messagesEl = document.getElementById("messages");
 const inputEl = document.getElementById("input");
 const sendBtn = document.getElementById("send");
 const typingEl = document.getElementById("typing");
 
-// Auto-resize textarea
+// Auto-resize text input
 inputEl.addEventListener("input", () => {
   inputEl.style.height = "auto";
   inputEl.style.height = Math.min(inputEl.scrollHeight, 120) + "px";
@@ -36,25 +34,42 @@ async function sendMessage() {
 
   addMessage(text, "user");
   inputEl.value = "";
-  inputEl.style.height = "auto";
   sendBtn.disabled = true;
-  typingEl.classList.add("visible");
 
   try {
-    const res = await fetch(API_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message: text }),
+    const response = await fetch('http://localhost:8000/search', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ user_input: text })
     });
 
-    if (!res.ok) throw new Error(`Server error: ${res.status}`);
+    if (!response.ok) throw new Error(`Server error: ${response.status}`);
 
-    const data = await res.json();
-    addMessage(data.response, "assistant");
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+
+      const chunk = decoder.decode(value);
+      const lines = chunk.split('\n');
+
+      for (const line of lines) {
+        if (line.startsWith('data:')) {
+          const data = JSON.parse(line.slice(5));
+
+          if (chunk.includes('event: status')) {
+            addMessage(data.message, "assistant");
+          } else if (chunk.includes('event: result')) {
+            addMessage(data.message, "assistant");
+          }
+        }
+      }
+    }
   } catch (err) {
     addMessage(`Could not reach the backend (${err.message}). Make sure the server is running.`, "error");
   } finally {
-    typingEl.classList.remove("visible");
     sendBtn.disabled = false;
     inputEl.focus();
   }

@@ -10,7 +10,7 @@ The current frontend (`index.html`) is a single-file chat UI for testing the age
 
 ## What Changes
 
-- **Input**: Chat textarea becomes a search/query bar
+- **Input**: Chat text input becomes a search/query bar
 - **Output**: Message bubbles become a responsive card grid of listings
 - **Backend contract**: Return structured listing data (`{ listings: [...] }`) instead of plain text responses
 - **State**: Query string, loading flag, results array — simple enough for `useState`
