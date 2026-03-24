@@ -6,6 +6,8 @@ from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 
+from agent import run_agent
+
 app = FastAPI()
 
 app.add_middleware(
@@ -27,17 +29,13 @@ def format_sse(event: str, data: dict) -> str:
 @app.post("/search")
 async def search(request: SearchRequest):
     async def event_stream():
-        yield format_sse("status", {"message": "Starting search..."})
-        await asyncio.sleep(1)
-        yield format_sse("status", {"message": "Starting listings..."})
-        await asyncio.sleep(1)
-        yield format_sse("status", {"message": "Fetching HUD data..."})
-        await asyncio.sleep(1)
-        yield format_sse("status", {"message": "Fetching Census data..."})
-        await asyncio.sleep(1)
-        yield format_sse("status", {"message": "Done. This is where results will go."})
+        async for text in run_agent(request.user_input, messages):
+            yield format_sse("status", {"message": text})
 
     return StreamingResponse(event_stream(), media_type="text/event-stream")
 
+if __name__ == "__main__":
+     import uvicorn
+     uvicorn.run("main:app", reload=True)
 
 

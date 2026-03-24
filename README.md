@@ -19,14 +19,13 @@ Built as a learning project for agentic AI patterns — tool use, multi-step dec
 
 ## Stack
 
-| Layer | Technology |
-|---|---|
-| Backend | Python, FastAPI |
-| AI | Anthropic Claude API (claude-sonnet-4-6) |
-| Frontend | HTML, CSS, vanilla JS |
-| Streaming | Server-Sent Events (SSE) |
-| Market Data | HUD Fair Market Rents API |
-| Neighborhood Data | Census Bureau ACS API |
+| Layer             | Technology                                        |
+|-------------------|---------------------------------------------------|
+| Backend           | Python, FastAPI                                   |
+| AI                | Anthropic Claude API (claude-sonnet-4-6)          |
+| Frontend          | HTML, CSS, vanilla JS                             |
+| Streaming         | Server-Sent Events (SSE)                          |
+| Area Data         | HUD Fair Market Rents API & Census Bureau ACS API |
 
 ---
 
@@ -114,12 +113,11 @@ User query
 
 ### Tools
 
-| Tool | Purpose |
-|---|---|
-| `web_search` | Find listings matching user criteria |
-| `fetch_page` | Extract full details from a listing URL |
-| `hud_api` | Get HUD Fair Market Rent for a zip code and bedroom count |
-| `census_api` | Get neighborhood data (income, commute, density, vacancy) |
+| Tool | Purpose                                                                                                               |
+|---|-----------------------------------------------------------------------------------------------------------------------|
+| `web_search` | Find listings matching user criteria                                                                                  |
+| `fetch_page` | Extract full details from a listing URL                                                                               |
+| `get_area_data` | Get HUD Fair Market Rent for a zip code and bedroom count & get neighborhood data (income, commute, density, vacancy) |
 
 ### Streaming
 

@@ -40,33 +40,18 @@ TOOL_DEFINITIONS = [
     },
 
     {
-        "name": "hud_api",
-        "description": "Look up the official HUD Fair Market Rent for a specific zip code and bedroom count. Use this after identifying listings to compare their asking price against the government's baseline market rate. A listing significantly above FMR is overpriced relative to the market; at or below FMR is a good value signal.",
+        "name": "get_area_data",
+        "description": "Look up HUD Fair Market Rent and Census neighborhood data for a zip code. Use this after identifying listings to compare asking prices against the government baseline market rate and add neighborhood context. A listing significantly above FMR is overpriced; at or below FMR is a good value signal.",
         "input_schema": {
             "type": "object",
             "properties": {
                 "zip_code": {
                     "type": "string",
-                    "description": "5-digit US zip code as a string, e.g. '80203'. Used to determine the HUD metro area for Fair Market Rent lookup."
+                    "description": "5-digit US zip code as a string, e.g. '80203'."
                 },
                 "bedroom_count": {
                     "type": "integer",
-                    "description": "Number of bedrooms as an integer (1, 2, 3, or 4). Used to return the correct FMR for that unit size. Or 0 if the user didn't specify a bedroom count."
-                }
-            },
-            "required": ["zip_code", "bedroom_count"]
-        }
-    },
-
-    {
-        "name": "census_api",
-        "description": "Look up neighborhood demographic and housing data for a zip code using the Census ACS dataset. Use this to add context about each listing's neighborhood — median income, commute times, population density, and vacancy rate. Call this after identifying specific zip codes from listings.",
-        "input_schema": {
-            "type": "object",
-            "properties": {
-                "zip_code": {
-                    "type": "string",
-                    "description": "5-digit US zip code as a string, e.g. '80203'. Used to scope the ACS data to a specific neighborhood."
+                    "description": "Number of bedrooms (1, 2, 3, or 4). Use 0 if the user did not specify a bedroom count."
                 },
                 "variables": {
                     "type": "array",
@@ -74,10 +59,10 @@ TOOL_DEFINITIONS = [
                         "type": "string",
                         "enum": ["median_income", "commute_time", "population_density", "vacancy_rate"]
                     },
-                    "description": "List of neighborhood data points to retrieve. Choose from: median_income, commute_time, population_density, vacancy_rate. Request only what's relevant to evaluation the listing."
+                    "description": "Neighborhood data points to retrieve. Request only what's relevant to evaluating the listing."
                 }
             },
-            "required": ["zip_code", "variables"]
+            "required": ["zip_code", "bedroom_count", "variables"]
         }
     }
 ]
