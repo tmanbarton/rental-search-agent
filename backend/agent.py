@@ -5,6 +5,8 @@ from tools.fetch_page import fetch_page
 from tools.get_area_data import get_data
 from tools.web_search import search
 
+# Arbitrary number
+MAX_TOOL_CALLS = 10
 client = Anthropic()
 
 async def run_agent(user_input, messages):
@@ -22,6 +24,7 @@ async def run_agent(user_input, messages):
         messages=messages
         # system=system_message todo
     )
+    num_tool_calls = 0
 
     # Agentic loop: keep going until Claude is done (end_turn).
     # Each iteration either handles a final text response or processes tool calls
@@ -53,6 +56,7 @@ async def run_agent(user_input, messages):
                     response_text = block.text
                     yield response_text
                 elif block.type == "tool_use":
+                    num_tool_calls += 1
                     tool_id = block.id
                     tool_name = block.name
                     tool_input = block.input

@@ -17,6 +17,7 @@ TOOL_DEFINITIONS = [
                     Example if location is missing: '1 bedroom apartments [current location - Denver Colorado] between $1000 and $1900 site:zillow.com OR site:apartments.com' or request location if user has turned off browser location
                     Example if bedroom count is missing: 'Apartments in Denver CO under $2000 site:zillow.com OR site:apartments.com'
                     Example if price is missing: '2 bedroom house for rent in denver CO site:zillow.com OR site:apartments.com'
+                    ONLY SEARCH ON THE SITE Zillow. Other sites block access when fetching pages from Python code.
                     """
                 }
             },
