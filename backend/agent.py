@@ -30,6 +30,12 @@ async def run_agent(user_input, messages):
     # Each iteration either handles a final text response or processes tool calls
     # and sends the results back to Claude for another round.
     while True:
+        if num_tool_calls >= MAX_TOOL_CALLS:
+            messages.append({
+                "role": "assistant",
+                "content": f"The number of tool calls reached the maximum allowed limit: {MAX_TOOL_CALLS}. Interrupting the process."
+            })
+            break
         if response.stop_reason == "end_turn":
             # Claude is done — extract the text and add it to conversation history
             messages.append({
