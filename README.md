@@ -1,5 +1,7 @@
 # Apartment Search Agent
 
+WIP
+
 A chat-based web tool that takes natural language input and returns a structured analysis of rental listings, combining real market data with live listing search.
 
 Built as a learning project for agentic AI patterns — tool use, multi-step decision making, and structured output.
@@ -153,15 +155,3 @@ This is Project 4 in a series of AI learning projects:
 | 2 | RAG Chatbot | Retrieval-augmented generation |
 | 3 | Structured Output | JSON schema, structured responses |
 | 4 | Apartment Search Agent | Tool use, agentic loop, SSE streaming |
-
----
-
-## Status
-
-- [x] Tool definitions (`tools/definitions.py`)
-- [ ] Agent loop (`agent.py`)
-- [ ] Tool implementations (`tools/*.py`)
-- [ ] FastAPI backend (`main.py`)
-- [ ] Structured output (`output.py`)
-- [ ] Frontend (`frontend/`)
-- [ ] SSE streaming
